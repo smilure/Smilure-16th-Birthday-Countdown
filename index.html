@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smilure 16th Birthday Countdown</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #countdown {
+            font-size: 36px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Countdown for my 16th Birthday</h1>
+    <div id="countdown"></div>
+
+    <script>
+        // Função para exibir a notificação
+        function showNotification() {
+            if ("Notification" in window) {
+                Notification.requestPermission().then(function (permission) {
+                    if (permission === "granted") {
+                        const notification = new Notification("Feliz Aniversário!", {
+                            body: "Parabéns pelos seus 16 anos!",
+                            icon: "birthday.png" // Adicione um ícone de aniversário personalizado se desejar
+                        });
+                    }
+                });
+            }
+        }
+
+        // Data do seu aniversário
+        const birthday = new Date("2024-06-07").getTime();
+
+        // Atualiza o contador a cada segundo
+        const countdown = setInterval(function() {
+            const now = new Date().getTime();
+            const timeLeft = birthday - now;
+
+            // Calcula os dias, horas, minutos e segundos restantes
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            // Exibe a contagem regressiva na página
+            document.getElementById("countdown").innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+            // Quando o aniversário chegar, exibe a notificação e para a contagem regressiva
+            if (timeLeft < 0) {
+                clearInterval(countdown);
+                document.getElementById("countdown").innerHTML = "Feliz Aniversário!";
+                showNotification();
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
